@@ -16,7 +16,7 @@ class Solver:
         return False     
 
     def doublon_sub(self, l, x, y, v):
-        taille_subdivision = len(l) // 3  
+        taille_subdivision = 3
         debut_subdivision_ligne = (x // taille_subdivision) * taille_subdivision
         debut_subdivision_colonne = (y // taille_subdivision) * taille_subdivision
         fin_subdivision_ligne = debut_subdivision_ligne + taille_subdivision - 1
