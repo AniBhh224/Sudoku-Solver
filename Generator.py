@@ -7,7 +7,7 @@ class Generator:
 
   
 
-    def genereateur_grille3(self, N):
+    def genereateur_grille_unsorted(self, N):
         grille = [[0 for i in range(N)] for i in range(N)]
         taille_subdivision = 3
         for i in range(0,N,3):
@@ -26,18 +26,9 @@ class Generator:
                         tab.append(nb_a_placer)
         return grille
 
-         
-    def swap_bon_colonne(self, grille, x1,y1,x2,y2):
-        global trouve3
-        var = grille[y2][x2]
-        grille[y2][x2] = grille[y1][x1]
-        grille[y1][x2] = var
-
     
         
     def tri_ligne(self, grille, y, col_trie):
-        print("Swap de ligne no ", y)
-        print("-------------------------")
         taille_subdivision = 3
         croise = []
         debut_subdivision_colonne = (y // taille_subdivision) * taille_subdivision
@@ -57,7 +48,6 @@ class Generator:
                                 grille[j][p] = grille[y][i]
                                 grille[y][i] = var
                                 trouve = True
-                                print("swap de ", grille[j][p], "avec ", grille[y][i])
                                 croise.append(grille[y][i])
                             p+=1
                         j+=1
@@ -68,19 +58,15 @@ class Generator:
                                 grille[j][i] = grille[y][i]
                                 grille[y][i] = var
                                 trouve = True
-                                print("swap de ", grille[j][i], "avec ", grille[y][i])
                                 croise.append(grille[y][i])
                             j+=1
                         
                     
                 if trouve == False:
-                    
-                    print('impossible de trouver un substitut pour ',grille[y][i])
                     n = 0
                     trouve2 = False
                     while grille[y][n] != grille[y][i]:
                         n+=1
-                    print("Le probleme est ", grille[y][n])
                     debut_subdivision_ligne = (n // taille_subdivision) * taille_subdivision
                     fin_subdivision_ligne = debut_subdivision_ligne + taille_subdivision - 1
                     j = y+1
@@ -94,25 +80,21 @@ class Generator:
                                     grille[j][p] = grille[y][n]
                                     grille[y][n] = var
                                     trouve2 = True
-                                    print("swap de ", grille[j][p], "avec ", grille[y][n])
                                     
                                 p+=1
                             j+=1
                     else:
-                        print("on a j =",j,"et la fin de la subdivision : ", fin_subdivision_colonne)
                         while trouve2 == False and j <= fin_subdivision_colonne:
                                 if (grille[j][n] not in croise):
                                     var = grille[j][n]
                                     grille[j][n] = grille[y][n]
                                     grille[y][n] = var
                                     trouve2 = True
-                                    print("swap de ", grille[j][n], "avec ", grille[y][n])
                                     croise.append(grille[y][n])
                                 j+=1
                         
 
                     if trouve2 == False:
-                        print('vraiment impossible de trouver un substitut pour ',grille[y][i])
                         trouve3 = False
                         c = 0
                         n = 0
@@ -135,24 +117,17 @@ class Generator:
                                 grille[y][n] = var
                                 trouve3 = True  
                                 croise.append(grille[y][n])
-                                print("swap", grille[y+1][n], grille[y][n] )
-                                print("tri ligne réussi")
                             if c >= 50:
                                 return grille
                             
 
             else:
                 croise.append(grille[y][i])
-        print("--------------")
-        for i in range(len(grille)):
-            print(grille[i])
         return grille 
     
 
 
     def tri_colonne(self, grille, x, ligne_trie):
-        print("Swap de colonne no ", x)
-        print("-------------------------")
         taille_subdivision = 3
         croise = []
         debut_subdivision_ligne = (x // taille_subdivision) * taille_subdivision
@@ -163,21 +138,16 @@ class Generator:
             if grille[i][x]  in croise:
                 trouve = False
                 j = x+1
-                print(croise)
-                print("recherche pour ", grille[i][x], "x =",  x, "y =", i)
                 if i not in ligne_trie:
                     while trouve == False and j <= fin_subdivision_ligne:
                         p = debut_subdivision_colonne
                         while (trouve == False) and (p <= fin_subdivision_colonne):
                             if (p not in ligne_trie) :
-                                print(p, j, 'essayé , valeur : ', grille[p][j])
                                 if grille[p][j] not in croise:
-                                    print(p, j, 'trouvé ')
                                     var = grille[p][j]
                                     grille[p][j] = grille[i][x]
                                     grille[i][x] = var
                                     trouve = True
-                                    print("swap de ", grille[p][j], "avec ", grille[i][x])
                                     croise.append(grille[i][x])
                                 
                             p+=1
@@ -186,20 +156,17 @@ class Generator:
                     
                     trouve = False
                     while trouve == False and j <= fin_subdivision_ligne:
-                            print(grille[i][j], "testé")
                             if (grille[i][j] not in croise):
                                 var = grille[i][j]
                                 grille[i][j] = grille[i][x]
                                 grille[i][x] = var
                                 trouve = True
-                                print("swap de ", grille[i][j], "avec ", grille[i][x])
                                 croise.append(grille[i][x])
                             j+=1
                     
                         
                     
                 if trouve == False:
-                    print('impossible de trouver un substitut pour ',grille[i][x])
                     n = 0
                     trouve2 = False
                     while grille[n][x] != grille[i][x]:
@@ -212,14 +179,12 @@ class Generator:
                             p = debut_subdivision_colonne
                             while (trouve2 == False) and (p <= fin_subdivision_colonne) :
                                 if (p not in ligne_trie) :
-                                    print("valeur testé ", grille[p][j] )
                                     if grille[p][j] not in croise:
                                         croise.append(grille[p][j])
                                         var = grille[p][j]
                                         grille[p][j] = grille[n][x]
                                         grille[n][x] = var
                                         trouve2 = True
-                                        print("swap de ", grille[p][j], "avec ", grille[n][x])
                                 p+=1
                             j+=1
                     else:
@@ -229,17 +194,13 @@ class Generator:
                                     grille[n][j] = grille[n][x]
                                     grille[n][x] = var
                                     trouve2 = True
-                                    print("swap de ", grille[n][j], "avec ", grille[n][x])
                                     croise.append(grille[n][x])
-                                else: 
-                                    print(grille[n][j], 'deje croisé')
                                 j+=1
                                 
                     
 
 
                     if trouve2 == False:
-                        print('vraiment impossible de trouver un substitut pour ',grille[i][x], 'colonne')
                         trouve3 = False
                         c=0
                         n = 0
@@ -257,13 +218,11 @@ class Generator:
                                     
                                     grille[n][x+1] = grille[n][x]
                                     grille[n][x] = var
-                                    print("swap", grille[n][x+1], grille[n][x])
                                     n = f
                                     c+=1
                                 elif x <=6:
-                                    print("Rappel pour x =", x+1)
-                                    grille = generator.tri_colonne(grille, x+1, ligne_trie)
-                                    grille = generator.tri_colonne(grille, x, ligne_trie)
+                                    grille = self.tri_colonne(grille, x+1, ligne_trie)
+                                    grille = self.tri_colonne(grille, x, ligne_trie)
                                     croise = []
                                     for b in range(0, i+1):
                                         croise.append(grille[b][x])
@@ -282,17 +241,12 @@ class Generator:
                                 grille[n][x] = var
                                 trouve3 = True  
                                 croise.append(grille[n][x])
-                                print("swap", grille[n][x+1], grille[n][x] )
-                                print("tri colonne réussi")
 
                             
                         
             
             else:
                 croise.append(grille[i][x])
-        print("------------------------")
-        for i in range(len(grille)):
-            print(grille[i])
         return grille 
     
 
@@ -325,10 +279,7 @@ class Generator:
     
     def generer(self, N):
         generator = Generator()
-        grille = generator.genereateur_grille3(N)
-        
-        for i in range(len(grille)):
-            print(grille[i])
+        grille = generator.genereateur_grille_unsorted(N)
         ligne_trie = []
         colonne_trie = []
         for i in range(len(grille)):
@@ -338,25 +289,44 @@ class Generator:
             colonne_trie.append(i)
         
         return grille
+
+    def enlever(self,grille, N, nb):
+        for i in range(nb):
+            x, y = random.randint(0, 8), random.randint(0, 8)
+            while grille[y][x] == 0:
+                x, y = random.randint(0, 8), random.randint(0, 8)
+            grille[y][x] = 0
+            print(grille)
+        return grille
+    
+    def generer_jouable(self,grille,  N, niveau):
+        solver = Solver()
+        grille = self.generer(N)
+        if niveau == 1:
+            a_enlever = random.randint(36, 41)
+            grille_jouable = self.enlever(grille, N, a_enlever)
+            print("grille",  grille)
+            while solver.nb_solu(grille_jouable) != 1:
+                grille = self.generer(N)
+                grille_jouable = self.enlever(grille, N, a_enlever)
+                print("grille",  grille)
+        elif niveau == 2:
+            a_enlever = random.randint(41, 45)
+            grille_jouable = self.enlever(grille, N, a_enlever)
+            while solver.nb_solu(grille_jouable) != 1:
+                grille = self.generer(N)
+                grille_jouable = self.enlever(grille, N, a_enlever)
         
+        elif niveau == 3:
+            a_enlever = random.randint(45, 49)
+            grille_jouable = self.enlever(grille, N, a_enlever)
+            while solver.nb_solu(grille_jouable) != 1:
+                grille = self.generer(N)
+                grille_jouable = self.enlever(grille, N, a_enlever)
+            
+        return (grille, grille_jouable)
     
 
-
-# Exemple d'utilisation
 generator = Generator()
-c = 0
-print("--------------------------------")
-
-for i in range(100):
-    grille = generator.generer(9)
-    print(generator.is_perfect(grille))
-    if generator.is_perfect(grille) == True:
-        c+=1
-        print(c)
-'''
-print('------------')
 grille = generator.generer(9)
-print(generator.is_perfect(grille))
-'''
-
-
+print(generator.generer_jouable(grille, 9, 3))

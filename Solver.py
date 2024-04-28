@@ -37,6 +37,7 @@ class Solver:
         return val_poss
 
     def nb_solu(self, sudoku):
+        print(sudoku)
         self.resoudre(sudoku)
         return self.nb_solutions
 
@@ -53,3 +54,5 @@ class Solver:
                 if x == 8 and y == 8:
                     self.nb_solutions += 1
         print(sudoku)
+solver = Solver()
+print(solver.nb_solu([[5, 0, 3, 8, 0, 2, 6, 0, 0], [9, 4, 0, 3, 5, 0, 7, 0, 2], [0, 0, 0, 6, 7, 0, 0, 3, 0], [3, 0, 8, 0, 0, 0, 4, 2, 0], [0, 5, 0, 9, 0, 0, 0, 0, 0], [0, 0, 1, 2, 8, 0, 9, 7, 3], [0, 2, 5, 1, 6, 0, 3, 0, 7], [0, 0, 9, 0, 0, 0, 1, 5, 8], [0, 0, 0, 5, 0, 0, 0, 0, 0]]))
