@@ -1,11 +1,10 @@
 from Solver import *
 import random
+import copy
 
 class Generator:
     def __init__(self):
         self.solver = Solver()
-
-  
 
     def genereateur_grille_unsorted(self, N):
         grille = [[0 for i in range(N)] for i in range(N)]
@@ -287,46 +286,45 @@ class Generator:
             ligne_trie.append(i)
             grille = generator.tri_colonne(grille, i, ligne_trie)
             colonne_trie.append(i)
-        
         return grille
 
-    def enlever(self,grille, N, nb):
+    def enlever(self, grille, N, nb):
+        grille2 = copy.deepcopy(grille)  # Créer une copie profonde de la grille
         for i in range(nb):
             x, y = random.randint(0, 8), random.randint(0, 8)
-            while grille[y][x] == 0:
+            while grille2[y][x] == 0:
                 x, y = random.randint(0, 8), random.randint(0, 8)
-            grille[y][x] = 0
-            print(grille)
-        return grille
+            grille2[y][x] = 0
+        return grille2
     
-    def generer_jouable(self,grille,  N, niveau):
+    def generer_jouable(self, grille, N, niveau):
         solver = Solver()
-        grille = self.generer(N)
+        reponse_grille = grille
         if niveau == 1:
             a_enlever = random.randint(36, 41)
-            grille_jouable = self.enlever(grille, N, a_enlever)
-            print("grille",  grille)
-            while solver.nb_solu(grille_jouable) != 1:
-                grille = self.generer(N)
-                grille_jouable = self.enlever(grille, N, a_enlever)
-                print("grille",  grille)
+            grille = self.enlever(reponse_grille, N, a_enlever)
+            while Solver().nb_solu(grille) != 1:
+                grille = self.enlever(reponse_grille, N, a_enlever)
+                
+
         elif niveau == 2:
             a_enlever = random.randint(41, 45)
-            grille_jouable = self.enlever(grille, N, a_enlever)
-            while solver.nb_solu(grille_jouable) != 1:
-                grille = self.generer(N)
-                grille_jouable = self.enlever(grille, N, a_enlever)
+            grille = self.enlever(reponse_grille, N, a_enlever)
+            while Solver().nb_solu(grille) != 1:
+                grille = self.enlever(reponse_grille, N, a_enlever)
         
         elif niveau == 3:
             a_enlever = random.randint(45, 49)
-            grille_jouable = self.enlever(grille, N, a_enlever)
-            while solver.nb_solu(grille_jouable) != 1:
-                grille = self.generer(N)
-                grille_jouable = self.enlever(grille, N, a_enlever)
-            
-        return (grille, grille_jouable)
+            grille = self.enlever(reponse_grille, N, a_enlever)
+            while Solver().nb_solu(grille) != 1:
+                grille = self.enlever(reponse_grille, N, a_enlever)
+        return grille
     
+    def affichier(self, grille):
+        for i in range(len(grille)):
+            print(grille[i])
 
 generator = Generator()
 grille = generator.generer(9)
-print(generator.generer_jouable(grille, 9, 3))
+print(grille)
+print(generator.generer_jouable(grille, 9, 1))
