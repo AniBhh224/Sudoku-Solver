@@ -325,6 +325,6 @@ class Generator:
             print(grille[i])
 
 generator = Generator()
-grille = generator.generer(9)
-print(grille)
-print(generator.generer_jouable(grille, 9, 1))
+reponse = generator.generer(9)
+grille = generator.generer_jouable(reponse, 9, 1)
+print(grille, reponse)
